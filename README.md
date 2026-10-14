@@ -2,6 +2,8 @@
 
 A tiny macOS menu bar app that shows today's day as a single character — `木` — or as much of the date as you like.
 
+Docs: https://ardasatata.github.io/nichi/
+
 macOS 15+ · Swift / SwiftUI + AppKit · no Dock icon
 
 ## Features
@@ -31,8 +33,9 @@ Any locale identifier works; the list above is just what the picker suggests fir
 ## Install
 
 Download the latest DMG or zip from [Releases](https://github.com/ardasatata/nichi/releases).
-Builds are currently unsigned: on first launch right-click **Nichi.app → Open**, or allow it under
-System Settings → Privacy & Security → **Open Anyway**.
+Builds are currently unsigned, so macOS blocks the first launch. Click **Done**, then allow it under
+System Settings → Privacy & Security → **Open Anyway** (on macOS 15+ right-click → Open no longer works).
+Or run `xattr -dr com.apple.quarantine /Applications/Nichi.app`.
 
 Homebrew (once signed releases and the tap are live):
 
