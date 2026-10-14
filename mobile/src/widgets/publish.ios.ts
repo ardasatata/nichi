@@ -8,6 +8,6 @@ export function publishProfiles(profiles: Profile[]): void {
   // Edit Widget lists the current profiles.
   NichiDay.setConfigurationParameterEnum(
     'profile',
-    profiles.map((p) => ({ name: `${p.id} · ${localeLabel(p.localeID)}`, value: p.id }))
+    profiles.map((p) => ({ name: `${p.id} · ${localeLabel(p.localeID)}`, value: `p${p.id}` }))
   );
 }

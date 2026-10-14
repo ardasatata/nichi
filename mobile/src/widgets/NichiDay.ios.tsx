@@ -28,7 +28,8 @@ const NichiDayWidget = (props: TimelineProps, environment: WidgetEnvironment<Con
   const background = dark ? '#161413' : '#FBF9F6';
   const secondary = dark ? '#A39B93' : '#6B6560';
 
-  const profile = environment.configuration?.profile ?? '1';
+  // Enum cases must be Swift identifiers, so profiles are configured as "p1".."p4".
+  const profile = (environment.configuration?.profile ?? 'p1').slice(1);
   const entry = props.p?.[profile as '1'] ?? props.p?.['1'] ?? { main: '日', sub: 'Open Nichi' };
   const family = environment.widgetFamily;
 

@@ -47,12 +47,12 @@
                       "title": "Profile",
                       "type": "enum",
                       "dynamic": true,
-                      "default": "1",
+                      "default": "p1",
                       "values": [
-                        { "name": "Profile 1", "value": "1" },
-                        { "name": "Profile 2", "value": "2" },
-                        { "name": "Profile 3", "value": "3" },
-                        { "name": "Profile 4", "value": "4" }
+                        { "name": "Profile 1", "value": "p1" },
+                        { "name": "Profile 2", "value": "p2" },
+                        { "name": "Profile 3", "value": "p3" },
+                        { "name": "Profile 4", "value": "p4" }
                       ]
                     }
                   }
