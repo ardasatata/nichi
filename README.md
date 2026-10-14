@@ -30,6 +30,27 @@ macOS 15+ · Swift / SwiftUI + AppKit · no Dock icon
 
 Any locale identifier works; the list above is just what the picker suggests first.
 
+## Mobile (iOS & Android widgets)
+
+`mobile/` contains an Expo SDK 58 / React Native app that shows the same day indicator as home screen
+widgets (and iOS lock screen widgets), built on `expo-widgets`.
+
+- One screen to set language, calendar and display style, with up to four profiles.
+- iOS: a single configurable widget; long-press → Edit Widget to choose a profile.
+- Android: widgets "Nichi 1–4", one per profile.
+- A year of days is pre-rendered, so widgets flip at midnight without opening the app
+  (Android uses a small local module, `mobile/modules/nichi-midnight`, to wake at local midnight).
+
+```sh
+cd mobile
+npm install
+npx expo run:ios      # or: npx expo run:android (development builds; Expo Go is not supported)
+npm test
+```
+
+Builds run on EAS: pushing a `mobile-v*` tag starts them. One-time setup: `npx eas-cli init` in `mobile/`
+and add an `EXPO_TOKEN` repository secret. SDK 58 is still in beta; Android widgets exist only there.
+
 ## Install
 
 Download the latest DMG or zip from [Releases](https://github.com/ardasatata/nichi/releases).

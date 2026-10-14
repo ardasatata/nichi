@@ -1,0 +1,40 @@
+{
+  "name": "nichi-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "test": "TZ=UTC jest",
+    "doctor": "expo-doctor"
+  },
+  "dependencies": {
+    "@expo/ui": "~58.0.16",
+    "expo": "~58.0.9",
+    "expo-build-properties": "~58.0.10",
+    "expo-dev-client": "~58.0.13",
+    "expo-sqlite": "~58.0.12",
+    "expo-status-bar": "~58.0.3",
+    "expo-widgets": "~58.0.16",
+    "react": "19.3.0",
+    "react-native": "0.88.0-rc.4",
+    "react-native-safe-area-context": "~5.9.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/react": "~19.3.0",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4",
+    "jest": "^30.0.0",
+    "jest-expo": "~58.0.9",
+    "typescript": "~5.9.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "testMatch": ["**/__tests__/**/*.test.ts"]
+  }
+}

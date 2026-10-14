@@ -1,0 +1,52 @@
+name: Mobile Release
+
+on:
+  push:
+    tags: ["mobile-v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: mobile
+
+jobs:
+  eas-build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check EAS credentials
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::error::EXPO_TOKEN secret is not set. Run 'npx eas-cli init' in mobile/ and add a token."
+            exit 1
+          fi
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Start EAS builds (Android APK + iOS simulator build)
+        id: build
+        run: |
+          eas build --profile preview --platform all --non-interactive --no-wait --json > builds.json
+          cat builds.json
+      - name: Publish release with build links
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "EAS builds started for ${GITHUB_REF_NAME}:"
+            echo
+            node -e 'for (const b of JSON.parse(require("fs").readFileSync("builds.json","utf8"))) console.log(`- ${b.platform}: ${b.buildDetailsPageUrl}`)'
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" --title "Nichi mobile ${GITHUB_REF_NAME#mobile-v}" --notes-file notes.md --verify-tag=false
