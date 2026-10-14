@@ -18,7 +18,7 @@ const NichiSlotWidget = (props: SlotProps) => {
   if (!props.configured) {
     return (
       <Box modifiers={[fillMaxSize(), paddingAll(8)]} contentAlignment="center">
-        <Text fontSize={13}>Set up in Nichi</Text>
+        <Text style={{ fontSize: 13 }}>Set up in Nichi</Text>
       </Box>
     );
   }
@@ -33,7 +33,7 @@ const NichiSlotWidget = (props: SlotProps) => {
   if (!entry) {
     return (
       <Box modifiers={[fillMaxSize(), paddingAll(8)]} contentAlignment="center">
-        <Text fontSize={13}>Open Nichi</Text>
+        <Text style={{ fontSize: 13 }}>Open Nichi</Text>
       </Box>
     );
   }
@@ -41,11 +41,13 @@ const NichiSlotWidget = (props: SlotProps) => {
   return (
     <Box modifiers={[fillMaxSize(), paddingAll(8)]} contentAlignment="center">
       <Column horizontalAlignment="center" verticalArrangement="center">
-        <Text fontSize={64} fontWeight="500" fontFamily="serif" color={accent} textAlign="center">
+        <Text
+          color={accent}
+          style={{ fontSize: 64, fontWeight: '500', fontFamily: 'serif', textAlign: 'center' }}>
           {entry.main}
         </Text>
         {entry.sub ? (
-          <Text fontSize={13} textAlign="center">
+          <Text style={{ fontSize: 13, textAlign: 'center' }}>
             {entry.sub}
           </Text>
         ) : null}
