@@ -5,8 +5,7 @@ struct NichiApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
 
     var body: some Scene {
-        Settings {
-            SettingsView(store: IndicatorStore.shared)
-        }
+        // Settings are shown from AppDelegate.showSettings(); a scene is required by App.
+        Settings { EmptyView() }
     }
 }
