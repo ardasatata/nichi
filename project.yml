@@ -1,0 +1,55 @@
+name: Nichi
+options:
+  bundleIdPrefix: com.ardasatata
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_HARDENED_RUNTIME: YES
+targets:
+  Nichi:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/Nichi
+      - path: Resources
+        optional: true
+    info:
+      path: Resources/Info.plist
+      properties:
+        CFBundleName: Nichi
+        CFBundleDisplayName: Nichi
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.utilities
+        NSHumanReadableCopyright: "Copyright © 2026 Arda Satata"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ardasatata.nichi
+        PRODUCT_NAME: Nichi
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  NichiTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests/NichiTests
+    dependencies:
+      - target: Nichi
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Nichi.app/Contents/MacOS/Nichi"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+schemes:
+  Nichi:
+    build:
+      targets:
+        Nichi: all
+    test:
+      targets:
+        - NichiTests

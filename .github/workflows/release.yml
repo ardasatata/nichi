@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version without the leading v (e.g. 0.1.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-26
+    env:
+      VERSION: ${{ inputs.version || github.ref_name }}
+      HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize version
+        run: echo "VERSION=${VERSION#v}" >> "$GITHUB_ENV"
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Build (ad-hoc signed)
+        run: scripts/build-release.sh "$VERSION" "${{ github.run_number }}"
+      - name: Package unsigned DMG and zip
+        run: scripts/make-dmg.sh "$VERSION"
+      - name: Sign and notarize (skipped without secrets)
+        id: sign
+        env:
+          DEVELOPER_ID_P12: ${{ secrets.DEVELOPER_ID_P12 }}
+          DEVELOPER_ID_P12_PASSWORD: ${{ secrets.DEVELOPER_ID_P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: scripts/sign-and-notarize.sh "$VERSION"
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v$VERSION" dist/* \
+            --title "Nichi $VERSION" --generate-notes --verify-tag=false
+      - name: Update Homebrew cask (only when signed and token present)
+        if: steps.sign.outputs.signed == 'true' && env.HOMEBREW_TAP_TOKEN != ''
+        run: |
+          SHA=$(shasum -a 256 "dist/Nichi-$VERSION.dmg" | awk '{print $1}')
+          sed -e "s/__VERSION__/$VERSION/" -e "s/__SHA256__/$SHA/" packaging/homebrew/nichi.rb > nichi.rb
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/ardasatata/homebrew-tap.git" tap
+          mkdir -p tap/Casks && cp nichi.rb tap/Casks/nichi.rb
+          cd tap
+          git config user.name "nichi-release"
+          git config user.email "noreply@users.noreply.github.com"
+          git add Casks/nichi.rb
+          git commit -m "nichi $VERSION"
+          git push
