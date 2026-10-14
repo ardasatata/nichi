@@ -1,0 +1,95 @@
+{
+  "expo": {
+    "name": "Nichi",
+    "slug": "nichi",
+    "scheme": "nichi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.ardasatata.nichi",
+      "supportsTablet": false,
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.ardasatata.nichi",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#B5192A"
+      }
+    },
+    "plugins": [
+      ["expo-build-properties", { "ios": { "deploymentTarget": "17.0" } }],
+      [
+        "expo-widgets",
+        {
+          "enableAndroid": true,
+          "widgets": [
+            {
+              "name": "NichiDay",
+              "displayName": "Nichi",
+              "description": "Today in one character",
+              "android": null,
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "accessoryCircular",
+                  "accessoryRectangular",
+                  "accessoryInline"
+                ],
+                "configuration": {
+                  "title": "Profile",
+                  "description": "Which Nichi profile to show",
+                  "parameters": {
+                    "profile": {
+                      "title": "Profile",
+                      "type": "enum",
+                      "dynamic": true,
+                      "default": "p1",
+                      "values": [
+                        { "name": "Profile 1", "value": "p1" },
+                        { "name": "Profile 2", "value": "p2" },
+                        { "name": "Profile 3", "value": "p3" },
+                        { "name": "Profile 4", "value": "p4" }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "NichiSlot1",
+              "displayName": "Nichi 1",
+              "description": "Profile 1",
+              "ios": null,
+              "android": { "targetCellWidth": 2, "targetCellHeight": 2, "minWidth": 110, "minHeight": 110, "resizeMode": "both" }
+            },
+            {
+              "name": "NichiSlot2",
+              "displayName": "Nichi 2",
+              "description": "Profile 2",
+              "ios": null,
+              "android": { "targetCellWidth": 2, "targetCellHeight": 2, "minWidth": 110, "minHeight": 110, "resizeMode": "both" }
+            },
+            {
+              "name": "NichiSlot3",
+              "displayName": "Nichi 3",
+              "description": "Profile 3",
+              "ios": null,
+              "android": { "targetCellWidth": 2, "targetCellHeight": 2, "minWidth": 110, "minHeight": 110, "resizeMode": "both" }
+            },
+            {
+              "name": "NichiSlot4",
+              "displayName": "Nichi 4",
+              "description": "Profile 4",
+              "ios": null,
+              "android": { "targetCellWidth": 2, "targetCellHeight": 2, "minWidth": 110, "minHeight": 110, "resizeMode": "both" }
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}

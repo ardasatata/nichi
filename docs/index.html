@@ -65,6 +65,7 @@
     <a href="#install">Install</a>
     <a href="#usage">Usage</a>
     <a href="#formats">Formats</a>
+    <a href="#mobile">Phone</a>
     <a href="#build">Build</a>
     <a href="https://github.com/ardasatata/nichi">GitHub</a>
   </nav>
@@ -156,6 +157,17 @@
       <tr><td><code>Gy年</code></td><td>Era and year</td><td>令和8年 (Japanese calendar)</td></tr>
     </table>
     <p>Full pattern reference: <a href="https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table">Unicode TR35 date field symbols</a>.</p>
+  </section>
+
+  <section id="mobile">
+    <h2>Phone widgets</h2>
+    <p>Nichi also ships as an Expo / React Native app for iOS and Android. It has one quiet screen for choosing a language, calendar and display style, and the day shows up as a widget on your home screen, and on the iOS lock screen.</p>
+    <div class="grid">
+      <div class="card"><h3>Up to four profiles</h3><p>Show Japanese on one widget and Chinese on another. On iOS pick the profile with Edit Widget; on Android add “Nichi 1” to “Nichi 4”.</p></div>
+      <div class="card"><h3>Changes at midnight</h3><p>The app pre-renders a year of days, so the widget flips without opening the app. On Android a small alarm wakes it at local midnight.</p></div>
+      <div class="card"><h3>Built on expo-widgets</h3><p>Widgets are written as React components with Expo UI, on Expo SDK 58.</p></div>
+    </div>
+    <p class="note">Mobile builds are separate from the Mac app. Tags starting with <code>mobile-v</code> start EAS builds; see <code>mobile/</code> in the repository.</p>
   </section>
 
   <section id="build">

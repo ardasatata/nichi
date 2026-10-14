@@ -3,7 +3,9 @@ name: CI
 on:
   push:
     branches: [main]
+    paths-ignore: ["mobile/**", "docs/**", "*.md"]
   pull_request:
+    paths-ignore: ["mobile/**", "docs/**", "*.md"]
 
 jobs:
   build-test:
