@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nichi 日 — day indicator for the macOS menu bar</title>
+<meta name="description" content="A tiny macOS menu bar app that shows today as a single kanji, or as much of the date as you like, in any locale and calendar.">
+<link rel="icon" href="favicon.png">
+<style>
+  :root {
+    --bg: #fbf9f6; --fg: #1d1b1a; --muted: #6b6560; --line: #e6e0d9;
+    --card: #ffffff; --accent: #b5192a; --code: #f1ece6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161413; --fg: #f1ece6; --muted: #a39b93; --line: #2d2926;
+            --card: #1e1b19; --accent: #f0544a; --code: #25211f; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Segoe UI", sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  nav { display: flex; gap: 20px; align-items: center; padding: 18px 0; font-size: 14px; }
+  nav .brand { font-weight: 700; color: var(--fg); text-decoration: none; margin-right: auto; }
+  nav a { color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--accent); }
+  header.hero { text-align: center; padding: 48px 0 40px; }
+  .hero img { width: 128px; height: 128px; }
+  h1 { font-size: 44px; line-height: 1.1; margin: 16px 0 8px; letter-spacing: -0.02em; }
+  .tag { font-size: 19px; color: var(--muted); max-width: 520px; margin: 0 auto 28px; }
+  .bar { display: inline-flex; gap: 14px; align-items: center; padding: 6px 16px; margin-bottom: 28px;
+         background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+         font-size: 15px; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  .bar b { font-size: 17px; }
+  .bar span { color: var(--muted); }
+  .btn { display: inline-block; padding: 11px 22px; border-radius: 10px; background: var(--accent);
+         color: #fff; font-weight: 600; text-decoration: none; }
+  .btn.alt { background: transparent; color: var(--fg); border: 1px solid var(--line); margin-left: 8px; }
+  section { padding: 36px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 26px; margin: 0 0 14px; letter-spacing: -0.01em; }
+  h3 { font-size: 17px; margin: 22px 0 6px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-top: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  .card h3 { margin-top: 0; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  td.k { font-size: 18px; white-space: nowrap; }
+  code, pre { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--code); border-radius: 6px; }
+  code { padding: 1px 6px; }
+  pre { padding: 14px 16px; overflow-x: auto; }
+  pre code { padding: 0; background: none; }
+  ol li, ul li { margin: 6px 0; }
+  .note { border-left: 3px solid var(--accent); padding: 4px 14px; color: var(--muted); background: var(--card); border-radius: 0 8px 8px 0; }
+  footer { padding: 32px 0 56px; color: var(--muted); font-size: 14px; text-align: center; border-top: 1px solid var(--line); }
+  @media (max-width: 520px) { h1 { font-size: 34px; } .btn.alt { margin: 10px 0 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#">日 Nichi</a>
+    <a href="#install">Install</a>
+    <a href="#usage">Usage</a>
+    <a href="#formats">Formats</a>
+    <a href="#build">Build</a>
+    <a href="https://github.com/ardasatata/nichi">GitHub</a>
+  </nav>
+
+  <header class="hero">
+    <img src="icon.png" alt="Nichi app icon: the kanji 日 on a red rounded square">
+    <h1>Today, in one character.</h1>
+    <p class="tag">Nichi puts the day of the week in your Mac's menu bar as a single kanji, or as much of the date as you want, in any locale and calendar.</p>
+    <div class="bar" aria-hidden="true"><span>Wi-Fi</span><span>100%</span><b>木</b><span>9:41</span></div>
+    <div>
+      <a class="btn" href="https://github.com/ardasatata/nichi/releases/latest">Download for macOS</a>
+      <a class="btn alt" href="#install">Install help</a>
+    </div>
+    <p style="color:var(--muted);font-size:14px;margin-top:14px">Requires macOS 15 or later. Free and open source.</p>
+  </header>
+
+  <section>
+    <h2>Why</h2>
+    <p>The built-in clock shows one date style in one language. If you read Japanese, Chinese or Korean, a single character such as <code>木</code> says what day it is faster than any string. If you work across locales or calendars, you can run several indicators side by side.</p>
+    <div class="grid">
+      <div class="card"><h3>Minimal by default</h3><p>One kanji for the weekday. Nothing else, no Dock icon.</p></div>
+      <div class="card"><h3>As much as you want</h3><p>Short or full weekday, day number, month and day, full date, era dates, or your own pattern.</p></div>
+      <div class="card"><h3>Many at once</h3><p>Add indicators for different locales and calendars, each its own menu bar item.</p></div>
+      <div class="card"><h3>Light on resources</h3><p>No timer. It refreshes on day change, clock or time zone change, and wake.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>Install</h2>
+    <ol>
+      <li>Download the <code>.dmg</code> from the <a href="https://github.com/ardasatata/nichi/releases/latest">latest release</a>.</li>
+      <li>Open it and drag <b>Nichi</b> to <b>Applications</b>, then launch it.</li>
+    </ol>
+    <h3>“Apple could not verify Nichi is free of malware”</h3>
+    <p>Current releases are not yet signed with an Apple Developer ID, so macOS blocks the first launch. To allow it:</p>
+    <ol>
+      <li>Click <b>Done</b> on the warning.</li>
+      <li>Open <b>System Settings → Privacy &amp; Security</b> and scroll to the Security section.</li>
+      <li>Click <b>Open Anyway</b> next to “Nichi was blocked”, authenticate, then click <b>Open</b>.</li>
+    </ol>
+    <p>Or remove the quarantine flag from Terminal:</p>
+<pre><code>xattr -dr com.apple.quarantine /Applications/Nichi.app</code></pre>
+    <p class="note">On macOS 15 and later, right-click → Open no longer bypasses this warning. You only need to do this once.</p>
+    <h3>Homebrew</h3>
+    <p>A cask will be published once releases are signed and notarized:</p>
+<pre><code>brew install --cask ardasatata/tap/nichi</code></pre>
+  </section>
+
+  <section id="usage">
+    <h2>Usage</h2>
+    <p>Click the indicator for a menu with today's full date in each configured locale, <b>Settings…</b>, <b>Launch at Login</b> and <b>Quit</b>.</p>
+    <p>In Settings, add an indicator with <b>+</b>, then choose its locale, calendar and display style. The preview updates as you change options. Drag to reorder, select and press <b>−</b> to remove. <b>Bold</b> makes the text heavier; <b>Boxed</b> draws it inside a rounded rectangle like a calendar tile.</p>
+
+    <h3>Suggested locales</h3>
+    <table>
+      <tr><th>Locale</th><th>Weekday</th><th>Calendar</th></tr>
+      <tr><td>日本語 <code>ja_JP</code></td><td class="k">月火水木金土日</td><td>Japanese (令和)</td></tr>
+      <tr><td>简体中文 <code>zh_Hans</code></td><td class="k">一二三四五六日</td><td>Chinese lunar</td></tr>
+      <tr><td>繁體中文 <code>zh_Hant</code></td><td class="k">一二三四五六日</td><td>Chinese lunar</td></tr>
+      <tr><td>한국어 <code>ko_KR</code></td><td class="k">월화수목금토일</td><td>Gregorian</td></tr>
+      <tr><td>ไทย <code>th_TH</code></td><td class="k">จ อ พ พฤ ศ ส อา</td><td>Buddhist</td></tr>
+      <tr><td>עברית <code>he_IL</code></td><td class="k">א׳ – ז׳</td><td>Hebrew</td></tr>
+      <tr><td>العربية <code>ar</code>, فارسی <code>fa_IR</code></td><td>Locale default</td><td>Islamic, Persian</td></tr>
+    </table>
+    <p>Any other locale identifier your Mac knows also works. The calendar is chosen separately, so for example a Japanese locale can show a Gregorian or a Japanese-era date.</p>
+  </section>
+
+  <section id="formats">
+    <h2>Display styles</h2>
+    <p>Examples for Thursday, 15 October 2026 in <code>ja_JP</code>:</p>
+    <table>
+      <tr><th>Style</th><th>Result</th></tr>
+      <tr><td>Weekday, single character (default)</td><td class="k">木</td></tr>
+      <tr><td>Weekday, full</td><td class="k">木曜日</td></tr>
+      <tr><td>Day number</td><td class="k">15日</td></tr>
+      <tr><td>Month and day</td><td class="k">10月15日</td></tr>
+      <tr><td>Month/day with weekday</td><td class="k">10/15(木)</td></tr>
+      <tr><td>Full date</td><td class="k">2026年10月15日 木曜日</td></tr>
+      <tr><td>Date with era (Japanese calendar)</td><td class="k">令和8年10月15日(木)</td></tr>
+    </table>
+    <h3>Custom patterns</h3>
+    <p>Choose <b>Custom pattern</b> and enter a Unicode (ICU) date pattern. Output follows the indicator's locale and calendar.</p>
+    <table>
+      <tr><th>Pattern</th><th>Meaning</th><th>Example (ja_JP)</th></tr>
+      <tr><td><code>EEEEE</code></td><td>Narrow weekday</td><td>木</td></tr>
+      <tr><td><code>EEEE</code></td><td>Full weekday</td><td>木曜日</td></tr>
+      <tr><td><code>M/d</code></td><td>Month and day, numeric</td><td>10/15</td></tr>
+      <tr><td><code>M/d(EEEEE)</code></td><td>Numeric date plus weekday</td><td>10/15(木)</td></tr>
+      <tr><td><code>Gy年</code></td><td>Era and year</td><td>令和8年 (Japanese calendar)</td></tr>
+    </table>
+    <p>Full pattern reference: <a href="https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table">Unicode TR35 date field symbols</a>.</p>
+  </section>
+
+  <section id="build">
+    <h2>Build from source</h2>
+    <p>You need Xcode and <a href="https://github.com/yonaskolb/XcodeGen">XcodeGen</a>.</p>
+<pre><code>brew install xcodegen
+git clone https://github.com/ardasatata/nichi.git
+cd nichi
+xcodegen generate
+xcodebuild -scheme Nichi -destination 'platform=macOS' test
+scripts/build-release.sh 0.9.1 &amp;&amp; scripts/make-dmg.sh 0.9.1</code></pre>
+    <p>Pushing a <code>v*</code> tag builds and publishes a GitHub Release. Signing, notarization and the Homebrew cask update run automatically once the repository secrets listed in the <a href="https://github.com/ardasatata/nichi#releases">README</a> are set.</p>
+    <p>To regenerate the app icon: <code>swift scripts/make-icon.swift</code>.</p>
+  </section>
+
+  <footer>
+    Nichi is open source. <a href="https://github.com/ardasatata/nichi">Source</a> ·
+    <a href="https://github.com/ardasatata/nichi/issues">Report an issue</a> ·
+    <a href="https://github.com/ardasatata/nichi/releases">Releases</a>
+  </footer>
+</div>
+</body>
+</html>
