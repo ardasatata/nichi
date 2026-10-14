@@ -30,11 +30,22 @@
     "eslint": "^9.0.0",
     "eslint-config-expo": "~58.0.4",
     "jest": "^30.0.0",
-    "jest-expo": "~58.0.9",
     "typescript": "~5.9.2"
   },
   "jest": {
-    "preset": "jest-expo",
-    "testMatch": ["**/__tests__/**/*.test.ts"]
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": [
+        "babel-jest",
+        {
+          "presets": [
+            "babel-preset-expo"
+          ]
+        }
+      ]
+    }
   }
 }
