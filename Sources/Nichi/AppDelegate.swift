@@ -1,4 +1,5 @@
 import AppKit
+import SwiftUI
 import Observation
 
 @MainActor
@@ -47,10 +48,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         for controller in controllers.values { controller.refresh() }
     }
 
+    private var settingsWindow: NSWindow?
+
     func showSettings() {
-        NSApp.activate()
-        if #available(macOS 14, *) {
-            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        if settingsWindow == nil {
+            let window = NSWindow(contentViewController: NSHostingController(rootView: SettingsView(store: store)))
+            window.title = "Nichi Settings"
+            window.styleMask = [.titled, .closable]
+            window.isReleasedWhenClosed = false
+            window.center()
+            settingsWindow = window
         }
+        NSApp.activate()
+        settingsWindow?.makeKeyAndOrderFront(nil)
     }
 }
